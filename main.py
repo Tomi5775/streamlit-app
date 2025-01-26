@@ -17,7 +17,7 @@ data = pd.read_csv(data_path)
 
 # Streamlit app
 def main():
-    st.title("Prediksi Biaya Asuransi Kesehatan")
+    st.title("Prediksi Biaya Asuransi Kesehatan dengan Regresi Linear dan Random Forest")
     
     # Menampilkan penjelasan tujuan aplikasi
     st.markdown("""
@@ -40,13 +40,6 @@ def main():
     - Memberikan perkiraan biaya yang dipengaruhi oleh berbagai faktor.
     - Memudahkan pemahaman biaya asuransi melalui teknologi pembelajaran mesin.
     """)
-
-    st.markdown("""
-    <div style="background-color: #00bfae; padding: 20px; border-radius: 10px; color: white; text-align: center;">
-        <h1>Prediksi Biaya Asuransi Kesehatan</h1>
-        <p style="font-size: 18px;">Aplikasi ini menggunakan model pembelajaran mesin untuk memprediksi biaya asuransi kesehatan berdasarkan data pengguna.</p>
-    </div>
-    """, unsafe_allow_html=True)
 
     # Show dataset
     if st.checkbox("Tampilkan Dataset"):
