@@ -21,7 +21,7 @@ def main():
     
     # Menampilkan penjelasan tujuan aplikasi
     st.markdown("""
-    **Tujuan Aplikasi Prediksi Biaya Asuransi Kesehatan**
+    **Tujuan Aplikasi Prediksi Biaya Asuransi Kesehatan** :robot_face:
 
     Aplikasi ini bertujuan untuk memberikan perkiraan biaya asuransi kesehatan berdasarkan data pengguna, 
     seperti usia, jenis kelamin, BMI (Indeks Massa Tubuh), jumlah anak, status merokok, dan wilayah tempat tinggal.
@@ -46,7 +46,7 @@ def main():
         st.dataframe(data)
 
     # Menampilkan grafik distribusi biaya asuransi
-    st.subheader("Distribusi Biaya Asuransi")
+    st.subheader("Distribusi Biaya Asuransi :chart_with_upwards_trend:")
     plt.figure(figsize=(10, 6))
     sns.histplot(data['charges'], kde=True, color='skyblue')
     plt.title("Distribusi Biaya Asuransi Kesehatan")
@@ -55,7 +55,7 @@ def main():
     st.pyplot(plt)
 
     # Menampilkan grafik hubungan antara usia dan biaya asuransi
-    st.subheader("Hubungan Usia dan Biaya Asuransi")
+    st.subheader("Hubungan Usia dan Biaya Asuransi :older_man: :moneybag:")
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x='age', y='charges', data=data, color='orange')
     plt.title("Hubungan Usia dan Biaya Asuransi Kesehatan")
@@ -64,7 +64,7 @@ def main():
     st.pyplot(plt)
 
     # Menampilkan grafik hubungan antara BMI dan biaya asuransi
-    st.subheader("Hubungan BMI dan Biaya Asuransi")
+    st.subheader("Hubungan BMI dan Biaya Asuransi :apple:")
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x='bmi', y='charges', data=data, color='green')
     plt.title("Hubungan BMI dan Biaya Asuransi Kesehatan")
@@ -72,7 +72,7 @@ def main():
     plt.ylabel("Biaya Asuransi")
     st.pyplot(plt)
 
-    st.sidebar.header("Input Data Pengguna")
+    st.sidebar.header("Input Data Pengguna :memo:")
 
     # User input fields
     age = st.sidebar.slider("Usia", int(data.age.min()), int(data.age.max()), int(data.age.mean()))
@@ -91,11 +91,11 @@ def main():
         "region": [region]
     })
 
-    st.subheader("Data Input Pengguna")
+    st.subheader("Data Input Pengguna :pencil2:")
     st.write(user_input)
 
     # Model selection
-    st.sidebar.header("Pilih Model")
+    st.sidebar.header("Pilih Model :bar_chart:")
     model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linier", "Random Forest"])
     
     if model_type == "Random Forest":
@@ -135,14 +135,14 @@ def main():
     y_pred = model.predict(X_test)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-    st.subheader("Evaluasi Model")
+    st.subheader("Evaluasi Model :white_check_mark:")
     st.write(f"Model yang dipilih: {model_type}")
     st.write(f"RMSE: {rmse:.2f}")
 
     # Make predictions
     prediction = model.predict(user_input)
 
-    st.subheader("Prediksi")
+    st.subheader("Prediksi :bulb:")
     st.write(f"Perkiraan Biaya Asuransi Kesehatan: ${prediction[0]:.2f}")
 
 if __name__ == "__main__":
