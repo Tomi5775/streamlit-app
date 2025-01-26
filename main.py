@@ -17,7 +17,7 @@ data = pd.read_csv(data_path)
 
 # Streamlit app
 def main():
-    st.set_page_config(page_title="Prediksi Biaya Asuransi Kesehatan dengan Regresi Linear dan Random Forest", page_icon="💰", layout="wide")
+    st.title("Prediksi Biaya Asuransi Kesehatan dengan Regresi Linear dan Random Forest", page_icon="💰", layout="wide")
     
     # Menampilkan penjelasan tujuan aplikasi
     st.markdown("""
