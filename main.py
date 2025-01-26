@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -15,7 +17,7 @@ data = pd.read_csv(data_path)
 
 # Streamlit app
 def main():
-    st.title("Aplikasi Prediksi Biaya Asuransi Kesehatan dengan Regresi Linear dan Random Forest")
+    st.title("Prediksi Biaya Asuransi Kesehatan")
     
     # Menampilkan penjelasan tujuan aplikasi
     st.markdown("""
@@ -43,6 +45,33 @@ def main():
     if st.checkbox("Tampilkan Dataset"):
         st.dataframe(data)
 
+    # Menampilkan grafik distribusi biaya asuransi
+    st.subheader("Distribusi Biaya Asuransi")
+    plt.figure(figsize=(10, 6))
+    sns.histplot(data['charges'], kde=True, color='skyblue')
+    plt.title("Distribusi Biaya Asuransi Kesehatan")
+    plt.xlabel("Biaya Asuransi (Charges)")
+    plt.ylabel("Frekuensi")
+    st.pyplot(plt)
+
+    # Menampilkan grafik hubungan antara usia dan biaya asuransi
+    st.subheader("Hubungan Usia dan Biaya Asuransi")
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='age', y='charges', data=data, color='orange')
+    plt.title("Hubungan Usia dan Biaya Asuransi Kesehatan")
+    plt.xlabel("Usia")
+    plt.ylabel("Biaya Asuransi")
+    st.pyplot(plt)
+
+    # Menampilkan grafik hubungan antara BMI dan biaya asuransi
+    st.subheader("Hubungan BMI dan Biaya Asuransi")
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(x='bmi', y='charges', data=data, color='green')
+    plt.title("Hubungan BMI dan Biaya Asuransi Kesehatan")
+    plt.xlabel("BMI (Indeks Massa Tubuh)")
+    plt.ylabel("Biaya Asuransi")
+    st.pyplot(plt)
+
     st.sidebar.header("Input Data Pengguna")
 
     # User input fields
@@ -67,7 +96,7 @@ def main():
 
     # Model selection
     st.sidebar.header("Pilih Model")
-    model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linear", "Random Forest"])
+    model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linier", "Random Forest"])
     
     if model_type == "Random Forest":
         n_estimators = st.sidebar.slider("Jumlah Pohon", 10, 200, 100)
@@ -83,7 +112,7 @@ def main():
         ]
     )
 
-    if model_type == "Regresi Linear":
+    if model_type == "Regresi Linier":
         model = Pipeline([
             ("preprocessor", preprocessor),
             ("regressor", LinearRegression())
