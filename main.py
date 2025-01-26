@@ -15,7 +15,7 @@ data = pd.read_csv(data_path)
 
 # Streamlit app
 def main():
-    st.title("Health Insurance Cost Prediction")
+    st.title("Aplikasi Prediksi Biaya Asuransi Kesehatan")
 
     # Show dataset
     if st.checkbox("Show Dataset"):
