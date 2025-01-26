@@ -83,7 +83,7 @@ def main():
         ]
     )
 
-    if model_type == "Regresi Linier":
+    if model_type == "Regresi Linear":
         model = Pipeline([
             ("preprocessor", preprocessor),
             ("regressor", LinearRegression())
