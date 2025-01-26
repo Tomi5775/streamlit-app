@@ -4,7 +4,7 @@ import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error
@@ -15,21 +15,43 @@ data = pd.read_csv(data_path)
 
 # Streamlit app
 def main():
-    st.title("Aplikasi Prediksi Biaya Asuransi Kesehatan")
+    st.title("Aplikasi Prediksi Biaya Asuransi Kesehatan dengan Regresi Linear dan Random Forest")
+    
+    # Menampilkan penjelasan tujuan aplikasi
+    st.markdown("""
+    **Tujuan Aplikasi Prediksi Biaya Asuransi Kesehatan**
+
+    Aplikasi ini bertujuan untuk memberikan perkiraan biaya asuransi kesehatan berdasarkan data pengguna, 
+    seperti usia, jenis kelamin, BMI (Indeks Massa Tubuh), jumlah anak, status merokok, dan wilayah tempat tinggal.
+
+    Aplikasi ini menggunakan model pembelajaran mesin (Linear Regression atau Random Forest) untuk memprediksi biaya 
+    asuransi kesehatan yang mungkin dikenakan berdasarkan faktor-faktor tersebut.
+
+    **Fitur Utama:**
+    1. Input data pengguna seperti usia, jenis kelamin, BMI, jumlah anak, status merokok, dan wilayah.
+    2. Prediksi biaya asuransi kesehatan berdasarkan data yang dimasukkan.
+    3. Evaluasi kinerja model dengan menunjukkan RMSE (Root Mean Squared Error).
+    4. Visualisasi prediksi untuk membantu pengguna memahami estimasi biaya.
+
+    **Manfaat Aplikasi:**
+    - Membantu pengguna merencanakan biaya asuransi kesehatan dengan lebih realistis.
+    - Memberikan perkiraan biaya yang dipengaruhi oleh berbagai faktor.
+    - Memudahkan pemahaman biaya asuransi melalui teknologi pembelajaran mesin.
+    """)
 
     # Show dataset
-    if st.checkbox("Show Dataset"):
+    if st.checkbox("Tampilkan Dataset"):
         st.dataframe(data)
 
-    st.sidebar.header("User Input Features")
+    st.sidebar.header("Input Data Pengguna")
 
     # User input fields
-    age = st.sidebar.slider("Age", int(data.age.min()), int(data.age.max()), int(data.age.mean()))
-    sex = st.sidebar.selectbox("Sex", data.sex.unique())
-    bmi = st.sidebar.slider("BMI", float(data.bmi.min()), float(data.bmi.max()), float(data.bmi.mean()))
-    children = st.sidebar.slider("Number of Children", int(data.children.min()), int(data.children.max()), int(data.children.mean()))
-    smoker = st.sidebar.selectbox("Smoker", data.smoker.unique())
-    region = st.sidebar.selectbox("Region", data.region.unique())
+    age = st.sidebar.slider("Usia", int(data.age.min()), int(data.age.max()), int(data.age.mean()))
+    sex = st.sidebar.selectbox("Jenis Kelamin", data.sex.unique())
+    bmi = st.sidebar.slider("BMI (Indeks Massa Tubuh)", float(data.bmi.min()), float(data.bmi.max()), float(data.bmi.mean()))
+    children = st.sidebar.slider("Jumlah Anak", int(data.children.min()), int(data.children.max()), int(data.children.mean()))
+    smoker = st.sidebar.selectbox("Status Merokok", data.smoker.unique())
+    region = st.sidebar.selectbox("Wilayah", data.region.unique())
 
     user_input = pd.DataFrame({
         "age": [age],
@@ -40,15 +62,15 @@ def main():
         "region": [region]
     })
 
-    st.subheader("User Input Features")
+    st.subheader("Data Input Pengguna")
     st.write(user_input)
 
     # Model selection
-    st.sidebar.header("Model Selection")
-    model_type = st.sidebar.selectbox("Select Model", ["Linear Regression", "Random Forest"])
+    st.sidebar.header("Pilih Model")
+    model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linier", "Random Forest"])
     
     if model_type == "Random Forest":
-        n_estimators = st.sidebar.slider("Number of Trees", 10, 200, 100)
+        n_estimators = st.sidebar.slider("Jumlah Pohon", 10, 200, 100)
     
     # Preprocessing and model pipeline
     categorical_features = ["sex", "smoker", "region"]
@@ -57,10 +79,11 @@ def main():
     preprocessor = ColumnTransformer(
         transformers=[
             ("cat", OneHotEncoder(), categorical_features),
-        ], remainder="passthrough"
+            ("num", StandardScaler(), numeric_features),
+        ]
     )
 
-    if model_type == "Linear Regression":
+    if model_type == "Regresi Linier":
         model = Pipeline([
             ("preprocessor", preprocessor),
             ("regressor", LinearRegression())
@@ -83,15 +106,15 @@ def main():
     y_pred = model.predict(X_test)
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-    st.subheader("Model Evaluation")
-    st.write(f"Selected Model: {model_type}")
+    st.subheader("Evaluasi Model")
+    st.write(f"Model yang dipilih: {model_type}")
     st.write(f"RMSE: {rmse:.2f}")
 
     # Make predictions
     prediction = model.predict(user_input)
 
-    st.subheader("Prediction")
-    st.write(f"Predicted Insurance Cost: ${prediction[0]:.2f}")
+    st.subheader("Prediksi")
+    st.write(f"Perkiraan Biaya Asuransi Kesehatan: ${prediction[0]:.2f}")
 
 if __name__ == "__main__":
     main()
