@@ -67,7 +67,7 @@ def main():
 
     # Model selection
     st.sidebar.header("Pilih Model")
-    model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linier", "Random Forest"])
+    model_type = st.sidebar.selectbox("Pilih Model", ["Regresi Linear", "Random Forest"])
     
     if model_type == "Random Forest":
         n_estimators = st.sidebar.slider("Jumlah Pohon", 10, 200, 100)
